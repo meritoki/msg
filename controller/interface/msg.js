@@ -84,7 +84,7 @@ exports.postEmailVerification = function(req, res) {
       // var link="http://"+req.get('host')+"/verify?mail="+encodedMail+"&id="+rand;
       var link="http://localhost/verify?mail="+encodedMail+"&id="+rand;
       var mailOptions={
-        from : 'meritoki@yahoo.com',
+        from : properties.email.address,
         to : req.body.to,
         subject : "Please confirm your Email account",
         html : "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>"
