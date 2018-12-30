@@ -1,0 +1,13 @@
+node_modules
+.DS_Store
+archive
+controller/archive
+controller/security
+controller/properties.js
+model/media
+model/relational/backup
+media
+security
+backup
+view/public/archive
+

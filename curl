@@ -1,0 +1,1 @@
+curl -X POST "http://localhost:8080/user/name/password" -H "accept: application/json;charset=UTF-8" -H "Content-Type: application/json;charset=UTF-8" -d "{ \"user\": \"test\", \"password\": \"123\"}"
