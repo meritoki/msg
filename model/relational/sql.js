@@ -5,15 +5,30 @@ exports.selectNameUser = function (name) {
 exports.selectEmail = function(user) {
   var sql = "";
   if(user.idConsumer != null) {
-    sql += selectConsumerEmail(user.idConsumer);
+    sql += this.selectConsumerEmail(user.idConsumer);
   } else if(user.idDonor != null) {
-    sql += selectDonorEmail(user.idConsumer);
+    sql += this.selectDonorEmail(user.idConsumer);
   } else if(user.idAgent != null) {
-    sql += selectAgentEmail(user.idConsumer);
+    sql += this.selectAgentEmail(user.idConsumer);
   }
   return sql;
 }
 
+exports.selectPhone = function(user) {
+  var sql = "";
+  if(user.idConsumer != null) {
+    sql += this.selectConsumerPhone(user.idConsumer);
+  }
+  return sql;
+}
+
+
+exports.selectConsumerPhone = function(id) {
+    return 'SELECT consumerPhone.idConsumer, phone.id AS idPhone, phone.number '+
+           'FROM msg.ConsumerPhone consumerPhone '+
+           'LEFT OUTER JOIN msg.Phone phone ON phone.id = consumerPhone.idPhone '+
+           'WHERE consumerPhone.idConsumer = '+id+';';
+}
 
 exports.selectConsumerEmail = function(id) {
     return 'SELECT consumerEmail.idConsumer, email.id AS idEmail, email.address '+
@@ -22,12 +37,6 @@ exports.selectConsumerEmail = function(id) {
              'WHERE consumerEmail.idConsumer = '+id+';'
 }
 
-exports.selectConsumerPhone = function(id) {
-    return 'SELECT consumerPhone.idConsumer, phone.id AS idPhone, phone.number '+
-           'FROM msg.ConsumerPhone consumerPhone '+
-           'LEFT OUTER JOIN msg.Phone phone ON phone.id = consumerPhone.idPhone '+
-           'WHERE consumerPhone.idConsumer = '+id+';';
-}
 
 exports.selectDonorEmail = function(id) {
     return 'SELECT donorEmail.idDonor, email.id AS idEmail, email.address '+

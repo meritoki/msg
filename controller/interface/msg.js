@@ -40,15 +40,29 @@ exports.postPhone = function(req, res, next) {
   });
 }
 
-var textMessage = function (to, from, body, complete) {
-    client.sms.messages.create({
-        body: body,
-        to: to,
-        from: from
-    }, complete);
-}
+exports.postIDEmail = function(req, res, next) {
+  relational.getEmail(req.body, function (error, location) {
+    if (error) {
+      console.log(error);
+      var status = 500;
+      res.status(status).end(http.STATUS_CODES[status]);
+    } else {
+      res.end(JSON.stringify(location));
+    }
+  });
+};
 
-
+exports.postIDPhone = function(req, res, next) {
+  relational.getPhone(req.body, function (error, location) {
+    if (error) {
+      console.log(error);
+      var status = 500;
+      res.status(status).end(http.STATUS_CODES[status]);
+    } else {
+      res.end(JSON.stringify(location));
+    }
+  });
+};
 
 exports.postVerificationSend = function(req, res) {
   console.log(req.body.to);
@@ -100,92 +114,3 @@ exports.postVerificationSend = function(req, res) {
     res.json({error : err === null ? false : true, data : data});
   });
 }
-
-exports.postIDEmail = function(req, res, next) {
-  relational.getEmail(req.body, function (error, location) {
-    if (error) {
-      console.log(error);
-      var status = 500;
-      res.status(status).end(http.STATUS_CODES[status]);
-    } else {
-      res.end(JSON.stringify(location));
-    }
-  });
-};
-
-exports.postEmailIDConsumer = function(req, res, next) {
-  var id = req.body.idConsumer;
-  relational.getEmailConsumer(id, function (error, location) {
-    if (error) {
-      console.log(error);
-      var status = 500;
-      res.status(status).end(http.STATUS_CODES[status]);
-    } else {
-      res.end(JSON.stringify(location));
-    }
-  });
-};
-
-exports.postPhoneIDConsumer = function(req, res, next) {
-  var id = req.body.idConsumer;
-  relational.getPhoneConsumer(id, function (error, location) {
-    if (error) {
-      console.log(error);
-      var status = 500;
-      res.status(status).end(http.STATUS_CODES[status]);
-    } else {
-      res.end(JSON.stringify(location));
-    }
-  });
-};
-
-// exports.postEmail = function (req, res, next) {
-//   res.end("email send");
-//     // var to = req.body.to;
-//     // var from= req.body.from;
-//     // var replyTo= req.body.replyTo;
-//     // var subject= req.body.subject;
-//     // var text= req.body.text;
-//     // var html = req.body.html;
-//     // var smtpTransport = nodemailer.createTransport("SMTP", {
-//     //     service: properties.email.service,
-//     //     auth: {
-//     //         user: properties.email.address,
-//     //         pass: properties.email.password
-//     //     }
-//     // });
-//     // var option = {
-//     //     to: to,
-//     //     from: from,
-//     //     replyTo: replyTo,
-//     //     subject: subject,
-//     //     text: text,
-//     //     html: html
-//     // };
-//     // smtpTransport.sendMail(option, function (error, response) {
-//     //     if (error) {
-//     //         console.log(error);
-//     //         res.end(error);
-//     //
-//     //     } else {
-//     //         console.log(response.message);
-//     //         smtpTransport.close();
-//     //         res.end(response);
-//     //     }
-//     //
-//     // });
-// }
-//
-// exports.postSMS = function (req, res, next) {
-//     console.log('postSMS');
-//     var to = req.body.to;
-//     var m = req.body.message;
-//     textMessage(to, properties.phone.from, m, function (error, message) {
-//         if (!error) {
-//             console.log(message.sid);
-//             res.end(message);
-//         } else {
-//             res.end(error);
-//         }
-//     });
-// }

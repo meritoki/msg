@@ -31,12 +31,17 @@ exports.setEmail = function(location, callback) {
 };
 
 exports.getEmail = function(user, callback) {
-  if (typeof id !== "undefined") {
+  if (typeof user !== "undefined") {
     database.getQueryResult(sql.selectEmail(user), function(err, result) {
       var e = null;
       if (result !== undefined && result != null && result.length > 0) {
         e = new email();
+        e.idUser = result[0].idUser;
+        e.idAgent = result[0].idAgent;
+        e.idMerchant = result[0].idMerchant;
         e.idConsumer = result[0].idConsumer;
+        e.idCustomer = result[0].idCustomer;
+        e.idDonor = result[0].idDonor;
         e.idEmail = result[0].idEmail;
         e.address = result[0].address;
       } else {
@@ -49,40 +54,24 @@ exports.getEmail = function(user, callback) {
   }
 };
 
-
-
-exports.getEmailConsumer = function(id, callback) {
-  if (typeof id !== "undefined") {
-    database.getQueryResult(sql.selectConsumerEmail(id), function(err, result) {
+exports.getPhone = function(user, callback) {
+  if (typeof user !== "undefined") {
+    database.getQueryResult(sql.selectPhone(user), function(err, result) {
       var e = null;
       if (result !== undefined && result != null && result.length > 0) {
-        e = new email();
+        e = new phone();
+        e.idUser = result[0].idUser;
+        e.idAgent = result[0].idAgent;
+        e.idMerchant = result[0].idMerchant;
         e.idConsumer = result[0].idConsumer;
-        e.idEmail = result[0].idEmail;
-        e.address = result[0].address;
+        e.idCustomer = result[0].idCustomer;
+        e.idDonor = result[0].idDonor;
+        e.idPhone = result[0].idPhone;
+        e.number = result[0].number;
       } else {
         return callback(new Error("id is null"), null);
       }
       return callback(err, e);
-    });
-  } else {
-    return callback(new Error("typeof name === \"undefined\""), null);
-  }
-};
-
-exports.getPhoneConsumer = function(id, callback) {
-  if (typeof id !== "undefined") {
-    database.getQueryResult(sql.selectConsumerPhone(id), function(err, result) {
-      var p = null;
-      if (result !== undefined && result != null && result.length > 0) {
-        p = new phone();
-        p.idConsumer = result[0].idConsumer;
-        p.idEmail = result[0].idEmail;
-        p.number = result[0].number;
-      } else {
-        return callback(new Error("id is null"), null);
-      }
-      return callback(err, p);
     });
   } else {
     return callback(new Error("typeof name === \"undefined\""), null);
