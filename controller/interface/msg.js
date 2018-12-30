@@ -3,9 +3,6 @@
  */
 var relational = require('../../model/relational.js');
 var properties = require('../properties.js');
-// var nodemailer = require("nodemailer");
-var twilio = require('twilio');
-var client = new twilio.RestClient('AC3bc642a06bdd2fe29860533605629696', '9e7e573393f4dba697de92a73d59651f');
 var http = require('http');
 var bodyParser = require('body-parser');
 var nodemailer = require("nodemailer");
@@ -13,7 +10,7 @@ var redis = require('redis');
 var redisClient = redis.createClient(); // default setting.
 var mandrillTransport = require('nodemailer-mandrill-transport');
 var async = require('async');
-var smtpTransport = nodemailer.createTransport('smtps://jorodriguez1988@gmail.com:rohrWaka@22001188@smtp.gmail.com');
+var smtpTransport = nodemailer.createTransport('smtps://'+properties.email.address+':'+properties.email.password+'@smtp.gmail.com');
 
 
 exports.postEmail = function(req, res, next) {
@@ -64,7 +61,7 @@ exports.postIDPhone = function(req, res, next) {
   });
 };
 
-exports.postVerificationSend = function(req, res) {
+exports.postEmailVerification = function(req, res) {
   console.log(req.body.to);
   async.waterfall([
     // Check if email already exists.
@@ -113,4 +110,44 @@ exports.postVerificationSend = function(req, res) {
     console.log(err,data);
     res.json({error : err === null ? false : true, data : data});
   });
+}
+
+exports.getVerify=  function(req, res) {
+  var host = "localhost";
+  // if((req.protocol+"://"+req.get('host')) === ("http://"+host)) {
+      async.waterfall([
+        function(callback) {
+          let decodedMail = new Buffer(req.query.mail, 'base64').toString('ascii');
+          redisClient.get(decodedMail,function(err,reply) {
+            if(err) {
+              return callback(true,"Error in redis");
+            }
+            if(reply === null) {
+              return callback(true,"Invalid email address");
+            }
+            callback(null,decodedMail,reply);
+          });
+        },
+        function(key,redisData,callback) {
+          if(redisData === req.query.id) {
+            redisClient.del(key,function(err,reply) {
+              if(err) {
+                return callback(true,"Error in redis");
+              }
+              if(reply !== 1) {
+                return callback(true,"Issue in redis");
+              }
+              callback(null,"Email is verified");
+            });
+          } else {
+            return callback(true,"Invalid token");
+          }
+        }
+      ],function(err,data) {
+        res.send(data);
+      });
+    // } else {
+    //   res.end("<h1>Request is from unknown source");
+    // }
+
 }

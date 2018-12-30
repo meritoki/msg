@@ -7,6 +7,7 @@ exports.delete = function(router) {
 
 exports.get = function(router) {
   console.log('service.path.get()');
+  router.get("/v1/msg/email/verify", msg.getVerify);
 };
 
 exports.post = function(router) {
@@ -15,5 +16,5 @@ exports.post = function(router) {
   router.post("/v1/msg/phone/id",msg.postIDPhone);
   router.post("/v1/msg/email", msg.postEmail);
   router.post("/v1/msg/phone", msg.postPhone);
-  router.post("/v1/msg/email/verification/send", msg.postVerificationSend);
+  router.post("/v1/msg/email/verification", msg.postEmailVerification);
 };
