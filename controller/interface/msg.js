@@ -10,7 +10,7 @@ var redis = require('redis');
 var redisClient = redis.createClient(); // default setting.
 var mandrillTransport = require('nodemailer-mandrill-transport');
 var async = require('async');
-var smtpTransport = nodemailer.createTransport('smtps://'+properties.email.address+':'+properties.email.password+'@smtp.gmail.com');
+var smtpTransport = nodemailer.createTransport('smtps://admin@meritoki.com:rohrWaka@22001188@smtp.gmail.com');
 
 
 exports.postEmail = function(req, res, next) {
@@ -137,6 +137,7 @@ exports.getVerify=  function(req, res) {
               if(reply !== 1) {
                 return callback(true,"Issue in redis");
               }
+              //set auth.User active in the database
               callback(null,"Email is verified");
             });
           } else {
@@ -144,7 +145,23 @@ exports.getVerify=  function(req, res) {
           }
         }
       ],function(err,data) {
-        res.send(data);
+        // res.send(data);
+        console.log(data);
+        if(data == "Email is verified" ) {
+            //save active code
+            let decodedMail = new Buffer(req.query.mail, 'base64').toString('ascii');
+            relational.setActive(decodedMail, function (error, boolean) {
+              if (error) {
+                console.log(error);
+                var status = 500;
+                res.status(status).end(http.STATUS_CODES[status]);
+              } else {
+                res.end(JSON.stringify(boolean));
+              }
+            });
+        } else if(data == "Invalid email address") {
+          res.end("Invalid email address");
+        }
       });
     // } else {
     //   res.end("<h1>Request is from unknown source");

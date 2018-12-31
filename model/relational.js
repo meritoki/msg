@@ -4,6 +4,19 @@ var bcrypt = require('bcryptjs');
 var email = require('./object/email.js');
 var phone = require('./object/phone.js');
 
+exports.setActive = function(name, callback) {
+  if (typeof name !== "undefined") {
+    database.getQueryResult(sql.updateUser(name), function(err, result, fields) {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, true);
+    });
+  } else {
+    callback(new Error("typeof user === \"undefined\""), null);
+  }
+};
+
 exports.setPhone = function(location, callback) {
   if (typeof location !== "undefined") {
     database.getQueryResult(sql.insertPhone(location), function(err, result, fields) {
@@ -29,6 +42,8 @@ exports.setEmail = function(location, callback) {
     callback(new Error("typeof user === \"undefined\""), null);
   }
 };
+
+
 
 exports.getEmail = function(user, callback) {
   if (typeof user !== "undefined") {

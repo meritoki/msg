@@ -1,6 +1,8 @@
-exports.selectNameUser = function (name) {
-    return 'SELECT u.id, u.idAccount, u.name, u.password, u.registerDate, u.activityDate, u.login, u.role, e.address AS email FROM auth.User u LEFT OUTER JOIN msg.Email e ON e.idUser=u.id WHERE name = \'' + name + '\';';
-};
+
+exports.updateUser = function (name) {
+    return "UPDATE auth.User SET active=1 WHERE name=\""+name+"\";";
+}
+
 
 exports.selectEmail = function(user) {
   var sql = "";
