@@ -3,6 +3,31 @@ var sql = require('./relational/sql.js');
 var bcrypt = require('bcryptjs');
 var email = require('./object/email.js');
 var phone = require('./object/phone.js');
+var user = require('./object/user.js');
+
+exports.getNameUser = function(name, callback) {
+  console.log('relational.getNameUser');
+  if (typeof name !== "undefined") {
+    database.getQueryResult(sql.selectNameUser(name), function(err, result) {
+      u = null;
+      if (result !== undefined && result != null && result.length > 0) {
+        u = new user();
+        u.idUser = result[0].id;
+        u.idAccount = result[0].idAccount;
+        u.name = result[0].name;
+        u.email = result[0].email;
+        u.role = result[0].role;
+        u.password = result[0].password;
+        u.active = result[0].active;
+      } else {
+        return callback(new Error("user is null"), null);
+      }
+      return callback(err, u);
+    });
+  } else {
+    return callback(new Error("typeof name === \"undefined\""), null);
+  }
+};
 
 exports.setActive = function(name, callback) {
   if (typeof name !== "undefined") {
@@ -48,9 +73,8 @@ exports.setEmail = function(location, callback) {
 exports.getEmail = function(user, callback) {
   if (typeof user !== "undefined") {
     database.getQueryResult(sql.selectEmail(user), function(err, result) {
-      var e = null;
+      var e = new email();
       if (result !== undefined && result != null && result.length > 0) {
-        e = new email();
         e.idUser = result[0].idUser;
         e.idAgent = result[0].idAgent;
         e.idMerchant = result[0].idMerchant;
@@ -59,10 +83,8 @@ exports.getEmail = function(user, callback) {
         e.idDonor = result[0].idDonor;
         e.idEmail = result[0].idEmail;
         e.address = result[0].address;
-      } else {
-        return callback(new Error("id is null"), null);
       }
-      return callback(err, e);
+      return callback(null, e);
     });
   } else {
     return callback(new Error("typeof name === \"undefined\""), null);
@@ -72,9 +94,8 @@ exports.getEmail = function(user, callback) {
 exports.getPhone = function(user, callback) {
   if (typeof user !== "undefined") {
     database.getQueryResult(sql.selectPhone(user), function(err, result) {
-      var e = null;
+      var e = new phone();
       if (result !== undefined && result != null && result.length > 0) {
-        e = new phone();
         e.idUser = result[0].idUser;
         e.idAgent = result[0].idAgent;
         e.idMerchant = result[0].idMerchant;
@@ -83,10 +104,8 @@ exports.getPhone = function(user, callback) {
         e.idDonor = result[0].idDonor;
         e.idPhone = result[0].idPhone;
         e.number = result[0].number;
-      } else {
-        return callback(new Error("id is null"), null);
       }
-      return callback(err, e);
+      return callback(null, e);
     });
   } else {
     return callback(new Error("typeof name === \"undefined\""), null);

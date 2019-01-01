@@ -11,6 +11,7 @@ var redisClient = redis.createClient(); // default setting.
 var mandrillTransport = require('nodemailer-mandrill-transport');
 var async = require('async');
 var smtpTransport = nodemailer.createTransport('smtps://admin@meritoki.com:rohrWaka@22001188@smtp.gmail.com');
+var Request = require('request');
 
 
 exports.postEmail = function(req, res, next) {
@@ -147,9 +148,10 @@ exports.getVerify=  function(req, res) {
       ],function(err,data) {
         // res.send(data);
         console.log(data);
+        let decodedMail = new Buffer(req.query.mail, 'base64').toString('ascii');
         if(data == "Email is verified" ) {
             //save active code
-            let decodedMail = new Buffer(req.query.mail, 'base64').toString('ascii');
+
             relational.setActive(decodedMail, function (error, boolean) {
               if (error) {
                 console.log(error);
@@ -159,8 +161,20 @@ exports.getVerify=  function(req, res) {
                 res.end(JSON.stringify(boolean));
               }
             });
-        } else if(data == "Invalid email address") {
-          res.end("Invalid email address");
+        } else {
+          Request.post({
+            "headers": { "content-type": "application/json" },
+            "url": "http://localhost:3000/v1/auth/name",
+            "body": JSON.stringify({
+                "name": decodedMail
+            })
+          }, (error, response, body) => {
+              if (error) {
+                res.end(error);
+              } else {
+                res.end(JSON.stringify(body));
+              }
+          });
         }
       });
     // } else {
