@@ -5,9 +5,20 @@ var email = require('./object/email.js');
 var phone = require('./object/phone.js');
 var user = require('./object/user.js');
 
+var valid = function(value) {
+  var boolean = true;
+  if (typeof value === "undefined") {
+    boolean = false;
+  }
+  if(value == null) {
+    boolean = false;
+  }
+  return boolean;
+};
+
 exports.getNameUser = function(name, callback) {
   console.log('relational.getNameUser');
-  if (typeof name !== "undefined") {
+  if (valid(name)) {
     database.getQueryResult(sql.selectNameUser(name), function(err, result) {
       u = null;
       if (result !== undefined && result != null && result.length > 0) {
@@ -25,12 +36,12 @@ exports.getNameUser = function(name, callback) {
       return callback(err, u);
     });
   } else {
-    return callback(new Error("typeof name === \"undefined\""), null);
+    return callback(new Error("parameter not valid"), null);
   }
 };
 
 exports.setActive = function(name, callback) {
-  if (typeof name !== "undefined") {
+  if (valid(name)) {
     database.getQueryResult(sql.updateUser(name), function(err, result, fields) {
       if (err) {
         callback(err, null);
@@ -38,12 +49,12 @@ exports.setActive = function(name, callback) {
       callback(null, true);
     });
   } else {
-    callback(new Error("typeof user === \"undefined\""), null);
+    callback(new Error("parameter not valid"), null);
   }
 };
 
 exports.setPhone = function(location, callback) {
-  if (typeof location !== "undefined") {
+  if (valid(location)) {
     database.getQueryResult(sql.insertPhone(location), function(err, result, fields) {
       if (err) {
         callback(err, null);
@@ -51,12 +62,12 @@ exports.setPhone = function(location, callback) {
       callback(null, true);
     });
   } else {
-    callback(new Error("typeof user === \"undefined\""), null);
+    callback(new Error("parameter not valid"), null);
   }
 };
 
 exports.setEmail = function(location, callback) {
-  if (typeof location !== "undefined") {
+  if (valid(location)) {
     database.getQueryResult(sql.insertEmail(location), function(err, result, fields) {
       if (err) {
         callback(err, null);
@@ -64,14 +75,14 @@ exports.setEmail = function(location, callback) {
       callback(null, true);
     });
   } else {
-    callback(new Error("typeof user === \"undefined\""), null);
+    callback(new Error("parameter not valid"), null);
   }
 };
 
 
 
 exports.getEmail = function(user, callback) {
-  if (typeof user !== "undefined") {
+  if (valid(user)) {
     database.getQueryResult(sql.selectEmail(user), function(err, result) {
       var e = new email();
       if (result !== undefined && result != null && result.length > 0) {
@@ -87,12 +98,12 @@ exports.getEmail = function(user, callback) {
       return callback(null, e);
     });
   } else {
-    return callback(new Error("typeof name === \"undefined\""), null);
+    return callback(new Error("parameter not valid"), null);
   }
 };
 
 exports.getPhone = function(user, callback) {
-  if (typeof user !== "undefined") {
+  if (valid(user)) {
     database.getQueryResult(sql.selectPhone(user), function(err, result) {
       var e = new phone();
       if (result !== undefined && result != null && result.length > 0) {
@@ -108,6 +119,6 @@ exports.getPhone = function(user, callback) {
       return callback(null, e);
     });
   } else {
-    return callback(new Error("typeof name === \"undefined\""), null);
+    return callback(new Error("parameter not valid"), null);
   }
 };
