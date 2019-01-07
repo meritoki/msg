@@ -1,0 +1,169 @@
+{
+	"info": {
+		"_postman_id": "110d9c89-7579-4411-95ba-ae94c8717360",
+		"name": "msg-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:3004/v1/msg/email/id",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "idConsumer",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3004/v1/msg/email/id",
+					"host": [
+						"localhost"
+					],
+					"port": "3004",
+					"path": [
+						"v1",
+						"msg",
+						"email",
+						"id"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3004/v1/msg/phone/id",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "idConsumer",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3004/v1/msg/phone/id",
+					"host": [
+						"localhost"
+					],
+					"port": "3004",
+					"path": [
+						"v1",
+						"msg",
+						"phone",
+						"id"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3004/v1/msg/email",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "number",
+							"value": "34979441",
+							"type": "text"
+						},
+						{
+							"key": "idDonor",
+							"value": "2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3004/v1/msg/phone",
+					"host": [
+						"localhost"
+					],
+					"port": "3004",
+					"path": [
+						"v1",
+						"msg",
+						"phone"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3004/v1/msg/phone",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "number",
+							"value": "34979441",
+							"type": "text"
+						},
+						{
+							"key": "idDonor",
+							"value": "2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3004/v1/msg/phone",
+					"host": [
+						"localhost"
+					],
+					"port": "3004",
+					"path": [
+						"v1",
+						"msg",
+						"phone"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
