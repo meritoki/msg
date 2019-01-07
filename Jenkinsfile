@@ -7,12 +7,6 @@ pipeline {
         sh 'JENKINS_NODE_COOKIE=dontKillMe node index.js &'
       }
     }
-    stage('Test') {
-      steps {
-        sh 'sudo npm install newman -g'
-        sh 'newman run ./postman/msg-service.postman_collection.json --reporters cli,junit --reporter-junit-export newman.xml --insecure'
-      }
-    }
     stage('Deploy') {
       steps {
         sh 'mkdir -p /home/jorodriguez/meritoki/dailybread/'
