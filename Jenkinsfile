@@ -18,7 +18,7 @@ pipeline {
         sh 'docker stop msg-service || true && docker rm msg-service || true'
         sh 'docker rmi $(docker images |grep \'dailybread/msg-service\') || true'
         sh 'docker build -t dailybread/msg-service .'
-        sh 'sudo docker run --network host -dlt --restart unless-stopped --name msg-service -p 3000:3000 dailybread/msg-service'
+        sh 'sudo docker run --network host -dlt --restart unless-stopped --name msg-service -p 3004:3004 dailybread/msg-service'
       }
     }
   }
